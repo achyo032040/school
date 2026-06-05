@@ -1,0 +1,140 @@
+#include <bits/stdc++.h>
+#include <algorithm>
+#include <unistd.h>
+#include <windows.h>
+#include <time.h>
+#include <cstdio>
+#include <cstdlib>
+#include <math.h>
+using namespace std;
+int record;
+int new_record;
+string s,s1,nik;
+
+void start()
+{
+  cout << "Введи свой ник:";
+  cin >> nik; nik+=".txt";
+  ifstream fin;
+  fin.open(nik);
+  if (!fin.is_open()){
+    ofstream fout;
+    fout.open(nik);
+  }
+  fin >> record;
+  fin.close();
+  cout << "|Рекорд = " << record << "|" << endl;
+}
+void save()
+{
+  ofstream fileout;
+  fileout.open(nik);
+  fileout << record;
+  fileout.close();
+}
+
+int number()
+{
+  srand(time(0));
+  int a[11];
+  for (int i=1; i<=10; i++) a[i]=i;
+  random_shuffle(a+1,a+11);
+  return a[1];
+}
+int nu=number();
+
+void chit_game(int n)
+{
+  if (n==nu){
+    new_record++;
+    if (new_record>record) record=new_record;
+      cout << "|Рекорд = " << max(record,new_record) << "  Сейчас: " << new_record << "|" << endl;
+      cout << "Молодец. Число: " << nu << endl;
+      cout << "Будешь ещё?\n";
+      cin >> s;
+    if (s=="Да" || s=="да"){
+      system("CLS");
+      cout << "Введи число:\n";
+      cin >> n;
+      chit_game(n);
+    } else if (s!="Нет" && s!="нет") {
+          cout << "Error";
+          save(); exit(0);
+        }
+  } else{
+    cout << "|Рекорд = " << max(record,new_record) << "  Сейчас: " << new_record << "|" << endl;
+    if (new_record>record) record=new_record;
+    cout << "Число: " << nu << endl;
+    cout << "Не получилось.\n";
+    cout << "Будешь ещё?\n";
+    cin >> s;
+    if (s=="Да" || s=="да"){
+      system("CLS");
+      cout << "Введи число:\n";
+      cin >> n;
+      new_record=0;
+      chit_game(n);
+    } else if (s!="Нет" && s!="нет") {
+          cout << "Error";
+          save(); exit(0);
+        }
+  }
+}
+
+void _game(int n)
+{
+  int num=number();
+  if (n==num){
+    new_record++;
+    if (new_record>record) record=new_record;
+      cout << "|Рекорд = " << max(record,new_record) << "  Сейчас: " << new_record << "|" << endl;
+      cout << "Молодец. Число: " << num << endl;
+      cout << "Будешь ещё?\n";
+      cin >> s;
+      if (s=="Да" || s=="да"){
+        system("CLS");
+        cout << "Введи число:\n";
+        cin >> n;
+        _game(n);
+      } else if (s!="Нет" && s!="нет") {
+          cout << "Error";
+          save(); exit(0);
+        }
+    } else{
+        if (new_record>record) record=new_record;
+        cout << "|Рекорд = " << max(record,new_record) << "  Сейчас: " << new_record << "|" << endl;
+        cout << "Число: " << num << endl;
+        cout << "Не получилось.\n";
+        cout << "Будешь ещё?\n";
+        cin >> s;
+        if (s=="Да" || s=="да"){
+          system("CLS");
+          cout << "Введи число:\n";
+          cin >> n;
+          new_record=0;
+          _game(n);
+        } else if (s!="Нет" && s!="нет") {
+          cout << "Error";
+          save(); exit(0);
+        }
+      }
+}
+
+void _begin()
+{
+  cout << "Попробуй угадать число от 1 до 10(введи число):\n";
+  int n; cin >> n;
+  if (n>0 && n<10) _game(n);
+  if (n==88224646) chit_game(6);
+}
+
+
+int main()
+{
+  setlocale(LC_ALL,"Russian");
+  SetConsoleCP(1251);
+  SetConsoleOutputCP(1251);
+  start();
+  _begin();
+  save();
+}
